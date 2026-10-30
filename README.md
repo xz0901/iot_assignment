@@ -183,7 +183,9 @@ https://studymate-abbdd1909-dev.apps.rm1.0a51.p1.openshiftapps.com
 ---
 
 ## 5. 배포 결과
+<img width="2814" height="862" alt="Image" src="https://github.com/user-attachments/assets/c6db0f4c-e7b5-4c14-b2fd-16cd4344310e" />
 
+<img width="2844" height="1524" alt="Image" src="https://github.com/user-attachments/assets/03ab8e36-3d4e-449d-ab86-cb2d02912141" />
 
 ---
 
