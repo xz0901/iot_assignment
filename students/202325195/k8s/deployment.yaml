@@ -1,0 +1,69 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: studymate
+  labels:
+    app: studymate
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: studymate
+  template:
+    metadata:
+      labels:
+        app: studymate
+    spec:
+      containers:
+        - name: studymate-web
+          image: registry.access.redhat.com/ubi9/nginx-124:latest
+          command: ["nginx"]
+          args: ["-g", "daemon off;"]
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+
+          env:
+            - name: ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: studymate-secret
+                  key: ADMIN_PASSWORD
+
+          volumeMounts:
+            - name: html-content
+              mountPath: /opt/app-root/src/index.html
+              subPath: index.html
+              readOnly: true
+
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 10
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+
+      volumes:
+        - name: html-content
+          configMap:
+            name: studymate-config
+            items:
+              - key: index.html
+                path: index.html
